@@ -15,9 +15,16 @@ module.exports = {
     coinmarketcap: process.env.COINCAP_API,
   },
   settings: {
-    optimizer: {
-      enabled: true,
-      runs: 200,
-    },
+      optimizer: {
+          enabled: true,
+          runs: 2000,
+          details: {
+              yul: true,
+              yulDetails: {
+                  stackAllocation: true,
+                  optimizerSteps: "dhfoDgvulfnTUtnIf"
+              }
+          }
+      }
   },
 };

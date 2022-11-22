@@ -100,10 +100,8 @@ describe("svg", async function () {
     await s.store( 0,[number.toString(), number.toString(), number.toString(), number.toString(), number.toString(), number.toString(), number.toString(), number.toString(),  number.toString() ], [number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(),  number2.toString() ]);
 
 
-    // const svg = await s.twoLayer(0);
-
     const svg = await s.tokenSVG(0);
 
-    console.log('svg', svg)
+    // console.log('svg', svg)
   });
 });
