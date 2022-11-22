@@ -8,6 +8,7 @@
     "web3-utils": "^1.8.0"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^4.7.3"
+    "@openzeppelin/contracts": "^4.7.3",
+    "solady": "^0.0.53"
   }
 }
