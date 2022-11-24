@@ -7,21 +7,54 @@ const Web3Utils = require('web3-utils');
 
 const Home: NextPage = () => {
   const [bn, setBn] = React.useState('');
+  const [drawing, setDrawing] = React.useState<boolean>(false);
+  const [grid, setGrid] = React.useState<number[]>([...Array(2304)].fill(0));
 
-  let grid = [...Array(256)].map( (x,i) => {
-    const evenRow = (Math.floor(i /16)) % 2 == 0;
-    if (evenRow) return i % 2 ? 1:0 
-    else return i % 2 ? 0:1 ;
-  })
+  // let grid = [...Array(2304)].map( (x,i) => {
+  //   const evenRow = (Math.floor(i /48)) % 2 == 0;
+  //   if (evenRow) return i % 2 ? 1:0 
+  //   else return i % 2 ? 0:1 ;
+  // })
+  // let grid = [...Array(2304)].fill(0);
 
 
-  React.useEffect(() => {
-    if (grid) {
-      const number = new Web3Utils.BN(0); 
-      grid.forEach((n, i) => number.setn(i, n));
-      setBn(number.toString())
+
+  const clickPixel = (event: any, i: number) => {
+    let g = grid;
+    g[i] = 1;
+    console.log(g)
+    setGrid(g);
+    event.currentTarget.style.backgroundColor = 'salmon';
+    updateBN()
+  }
+
+  const fillPixel = (event: any, i: number) => {
+
+    if(drawing) {
+      let g = grid;
+      g[i] = 1;
+      console.log(g)
+      setGrid(g);
+      event.currentTarget.style.backgroundColor = 'salmon';
+      updateBN()
     }
-  }, [grid]);
+  }
+
+  const startDraw = () => {
+    setDrawing(true)
+  }
+
+  const endDraw = () => {
+    setDrawing(false)
+  }
+
+  
+  const updateBN = () => {
+    const number = new Web3Utils.BN(0); 
+    grid.forEach((n, i) => number.setn(i, n));
+    setBn(number.toString())
+  }
+
 
   return (
     <div className={styles.container}>
@@ -38,9 +71,13 @@ const Home: NextPage = () => {
         <div className={styles.grid}>
           {grid.map((x, i) => 
               <div
-                style={{ backgroundColor: x == 1 ? '#fafafa' : '#333'}}
+                onClick={(event) => clickPixel?.(event, i )}
+                onMouseDown={() => startDraw() }
+                onMouseUp={() => endDraw() }
+                onMouseEnter={(event) => fillPixel?.(event, i ) }
+                style={{ backgroundColor: x == 1 ? '#333' : '#fafafa'}}
                 key={i}
-                className={styles.gridItem}>{x }</div>
+                className={styles.gridItem}></div>
           )}
         </div>
         <div>

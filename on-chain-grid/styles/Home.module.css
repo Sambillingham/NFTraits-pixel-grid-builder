@@ -61,17 +61,18 @@
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  max-width: 800px;
+  max-width: 960px;
 }
 
 .gridItem {
-  flex-basis: 6.25%;
+  width: 20px;
   display: flex;
   border: dotted 1px #ccc;
-  min-height: 50px;
+  height: 20px;
   display: flex;
   justify-content: center;
   align-items: center; 
+  font-size: 8px;
 }
 
 @media (max-width: 600px) {
