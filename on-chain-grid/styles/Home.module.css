@@ -81,3 +81,20 @@
     flex-direction: column;
   }
 }
+
+.options {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.colorChoice {
+  height: 32px;
+  width: 32px;
+  margin: 1rem;
+  border: solid 1px #737373;
+  cursor: pointer;
+}
+
+.output {
+  word-break: break-word;
+}

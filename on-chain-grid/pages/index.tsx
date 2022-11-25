@@ -6,9 +6,11 @@ import React from 'react';
 const Web3Utils = require('web3-utils');
 
 const Home: NextPage = () => {
-  const [bn, setBn] = React.useState('');
+  const [layer1, setLayer1] = React.useState<string[]>([]);
+  const [layer2, setLayer2] = React.useState<string[]>([]);
   const [drawing, setDrawing] = React.useState<boolean>(false);
   const [grid, setGrid] = React.useState<number[]>([...Array(2304)].fill(0));
+  const [currentColour, setCurrentColour] = React.useState<number>(0);
 
   // let grid = [...Array(2304)].map( (x,i) => {
   //   const evenRow = (Math.floor(i /48)) % 2 == 0;
@@ -18,44 +20,85 @@ const Home: NextPage = () => {
   // let grid = [...Array(2304)].fill(0);
 
 
+  const colourOptions = ['#fff', '#333', '#999', '#ddd']
 
   const clickPixel = (event: any, i: number) => {
     let g = grid;
-    g[i] = 1;
-    console.log(g)
+    g[i] = currentColour;
     setGrid(g);
-    event.currentTarget.style.backgroundColor = 'salmon';
-    updateBN()
+    event.currentTarget.style.backgroundColor = colourOptions[currentColour];
   }
 
   const fillPixel = (event: any, i: number) => {
-
     if(drawing) {
       let g = grid;
-      g[i] = 1;
-      console.log(g)
+      g[i] = currentColour;
       setGrid(g);
-      event.currentTarget.style.backgroundColor = 'salmon';
-      updateBN()
+      event.currentTarget.style.backgroundColor = colourOptions[currentColour];
     }
   }
-
-  const startDraw = () => {
-    setDrawing(true)
-  }
-
-  const endDraw = () => {
-    setDrawing(false)
-  }
-
   
-  const updateBN = () => {
-    const number = new Web3Utils.BN(0); 
-    grid.forEach((n, i) => number.setn(i, n));
-    setBn(number.toString())
+  const generate = () => {
+    let layers = calcLayers(grid)
+    console.log('LAYERS ', layers)
+    
+    layers[0] = spliceIntoChunks(layers[0], 256)
+    layers[1] = spliceIntoChunks(layers[1], 256)
+    
+    const BigNumbersAsStrings = layers.map( layer => {
+      return layer.map(layerChunk => {
+        const bn = new Web3Utils.BN(0);
+        layerChunk.reverse().forEach((n, i) => bn.setn(i, n));
+        return bn.toString();
+      })
+      // return layer
+    })
+    
+    setLayer1(BigNumbersAsStrings[0])
+    setLayer2(BigNumbersAsStrings[1])
   }
 
-
+  const calcLayers = (arr: number[]) => {
+    let l1 = [...Array(2304)].fill(0);
+    let l2 = [...Array(2304)].fill(0);
+    console.log(arr)
+    for (let i = 0; i < arr.length; i++) {
+      const colour = arr[i];
+      switch (colour) {
+      case 0:
+        l1[i] = 0;
+        l2[i] = 0;
+        console.log('WHITE');
+        break;
+      case 1:
+        l1[i] = 1;
+        l2[i] = 1;
+        console.log('G1');
+        break;
+      case 2:
+        l1[i] = 1;
+        l2[i] = 0;
+        console.log('G2');
+        break;
+      case 3:
+        l1[i] = 0;
+        l2[i] = 1;
+        console.log('G3');
+        break;
+      }
+    }
+    return [l1, l2]
+  }
+  const spliceIntoChunks = (arr: number[], chunkSize: number) => {
+    const res = [];
+    console.log(arr.length)
+    while (arr.length > 0) {
+        const chunk = arr.splice(0, chunkSize);
+        res.push(chunk);
+    }
+    console.log(res)
+    return res;
+  }
   return (
     <div className={styles.container}>
       <Head>
@@ -68,20 +111,40 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <div className={styles.options}>
+        {colourOptions.map((colour, i) => 
+          <div
+            onClick={() => setCurrentColour(i)}
+            className={styles.colorChoice}
+            style={{ backgroundColor: colour}}
+          >
+          </div>
+        )}
+        </div>
         <div className={styles.grid}>
           {grid.map((x, i) => 
               <div
                 onClick={(event) => clickPixel?.(event, i )}
-                onMouseDown={() => startDraw() }
-                onMouseUp={() => endDraw() }
+                onMouseDown={() => setDrawing(true) }
+                onMouseUp={() => setDrawing(false) }
                 onMouseEnter={(event) => fillPixel?.(event, i ) }
-                style={{ backgroundColor: x == 1 ? '#333' : '#fafafa'}}
                 key={i}
                 className={styles.gridItem}></div>
           )}
         </div>
         <div>
-          <p>{bn}</p>
+          <button onClick={() => generate()}>generate</button>
+        <code>
+          [
+          {layer1.map((x, i) => 
+            <p className={styles.output}>'{x}',</p>
+          )}
+          ]
+          ,[
+          {layer2.map((x, i) => 
+            <p className={styles.output}>'{x}',</p>
+          )}]
+          </code>
         </div>
       </main>
     </div>

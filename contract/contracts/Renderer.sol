@@ -25,6 +25,9 @@ contract Renderer {
     string RED64 = "ZmYwMDAw";
     string GREEN64 = "MDBmZjAw";
     string BLUE64 = "MDAwMGZm";
+    string G164 = "MzMz";
+    string G264 = "OTk5";
+    string G364 = "ZGRk";
 
     constructor() {}
 
@@ -203,13 +206,15 @@ contract Renderer {
                     
                     uint256 cid = (l*256)+(i*8)+b;
 
-                    if(bit1 == 0 && bit2 == 0) colours[cid] = BLACK64;
-                    if(bit1 == 1 && bit2 == 1) colours[cid] = BLUE64;
-                    if(bit1 == 0 && bit2 == 1) colours[cid] = RED64;
-                    if(bit1 == 1 && bit2 == 0) colours[cid] = GREEN64;
+                    if(bit1 == 0 && bit2 == 0) colours[cid] = WHITE64;
+                    if(bit1 == 1 && bit2 == 1) colours[cid] = G164;
+                    if(bit1 == 1 && bit2 == 0) colours[cid] = G264;
+                    if(bit1 == 0 && bit2 == 1) colours[cid] = G364;
+
                 }
             }
-        }        
+        }
+    
         return colours;
     }
 
