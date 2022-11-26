@@ -2,41 +2,6 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const Web3Utils = require('web3-utils');
 
-let checkerGrid = [...Array(256)].map( (x,i) => {
-  const evenRow = ( Math.floor(i /16)) % 2 == 0;
-  if (evenRow) return i % 2 ? 1:0 
-  else return i % 2 ? 0:1 ;
-})
-
-const checkerNumber = new Web3Utils.BN(0); 
-checkerGrid.reverse().forEach((n, i) => checkerNumber.setn(i, n));
-
-const grid = [...Array(256)].fill(0);
-const grid2 = [...Array(256)].fill(0);
-grid[0] = 0 // Black
-grid2[0] = 0
-
-grid[1] = 1 // White
-grid2[1] = 1 //
-
-grid[2] = 0 // Red
-grid2[2] = 1 //
-
-grid[3] = 1 // Green
-grid2[3] = 0 //
-
-grid[4] = 0 // Black
-grid2[4] = 0
-
-grid[5] = 1 // White
-grid2[5] = 1 //
-
-grid[6] = 0 // Red
-grid2[6] = 1 //
-
-grid[7] = 1 // Green
-grid2[7] = 0 //
-
 
 const number = new Web3Utils.BN(0); 
 grid.reverse().forEach((n, i) => number.setn(i, n));
@@ -45,65 +10,6 @@ const number2 = new Web3Utils.BN(0);
 grid2.reverse().forEach((n, i) => number2.setn(i, n));
 
 describe("svg", async function () {
-
-  // it("run single layer", async function () {
-  //   const svgF = await hre.ethers.getContractFactory("Svg");
-  //   const s = await svgF.deploy();
-  
-  //   await s.deployed();
-  
-  //   console.log("S -> deployed to:", s.address);
-  //   const svg = await s.singleLayer(checkerNumber.toString());
-  //   console.log(svg)
-  // });
-
-  // it("run two layer", async function () {
-  //   const svgF = await hre.ethers.getContractFactory("Svg");
-  //   const s = await svgF.deploy();
-  
-  //   await s.deployed();
-  
-  //   console.log("S -> deployed to:", s.address);
-
-  //   await s.store( 0,[number.toString(), number.toString() ], [number2.toString(), number2.toString() ]);
-
-  //   const svg = await s.twoLayer(0);
-
-  //   console.log('svg', svg)
-  // });
-
-  // it("run two layer", async function () {
-  //   const svgF = await hre.ethers.getContractFactory("Svg");
-  //   const s = await svgF.deploy();
-  
-  //   await s.deployed();
-  
-  //   console.log("S -> deployed to:", s.address);
-
-  //   await s.store( 0,[number.toString(), number.toString() ], [number2.toString(), number2.toString() ]);
-
-  //   const svg = await s.draw2();
-
-  //   console.log('svg', svg)
-  // });
-
-
-
-  // it("run two layer", async function () {
-  //   const svgF = await hre.ethers.getContractFactory("Renderer");
-  //   const s = await svgF.deploy();
-  
-  //   await s.deployed();
-  
-  //   console.log("S -> deployed to:", s.address);
-
-  //   await s.store( 0,[number.toString(), number.toString(), number.toString(), number.toString(), number.toString(), number.toString(), number.toString(), number.toString(),  number.toString() ], [number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(), number2.toString(),  number2.toString() ]);
-
-
-  //   const svg = await s.tokenSVG(0);
-
-  //   // console.log('svg', svg)
-  // });
 
   it("run two layer", async function () {
     const svgF = await hre.ethers.getContractFactory("Renderer");
@@ -115,42 +21,42 @@ describe("svg", async function () {
 
     await s.store( 0,
       [
-        '86844066927987455099782736483744961174672399085325514818239763022828703629312',
+        '215682144387859885109560000158392704357296514047503851826402060958901',
         
-        '20219960000363051681728739404060170327935460741940307155772988456960',
+        '113495160187518652357887046427394540778109649156032018159923869571255770415376',
         
-        '1325135298583792955013774665584487322611578355183799969760738571515330560',
+        '114458615335068111925400406002890694146136894957349272561245014035095357504',
         
-        '86844066927987455099782736483744961174672399085325514818239763022828703629312',
+        '68766103483569937662513708549859923285450492847168159137152153767996253588488',
         
-        '20219960000363051681728739404060170327935460741940307155772988456960',
+        '21707652254501729341814189060312831910816671851240568055151831437276516171775',
         
-        '1325135298583792955013774665584487322611578355183799969760738571515330560',
+        '105060702740336674949450205062761313470070461062538888241171392817388038078468',
         
-        '86844066927987455099782736483744961174672399085325514818239763022828703629312',
+        '90483771983532903410350651096131134977356082598926730204084869447954567845888',
         
-        '20219960000363051681728739404060170327935460741940307155772988456960',
+        '3618513250813712781840556741640594899713099323876223831232090022539173560320',
         
-        '1325135298583792955013774665573336950012313023805991482058329992376352768',
+        '3570242327362256528346628777396278034205535825761063157769186910199972102144',
         
         ] ,[
-        '72370142045152214335675936980918049284343642892151693660279690520952983035904',
+        '1973683778179814790934449679809183038147012189679844965797257778561049346',
         
-        '16849966666969209734773949503383475273279550618283589296477490380800',
+        '1865790672645049829111385181648507797476502342419054634590799887347450005777',
         
-        '1104279415486494129178145554653739435509648629319833308133948809596108800',
+        '3619847201169310000537636195435547372432291438586266532023741909509070389504',
         
-        '72370055773322879249818947069787467645560332571104595681866469185690586357760',
+        '59080187917310571997773614854898290689934687265847019665440174222454720611100',
         
-        '16849966666969209734773949503383475273279550618283589296477490380800',
+        '14484722787089638624620897340188568784111297597974053460222604832485134041088',
         
-        '1104279415486494129178145554653739435509648629319833308133948809596108800',
+        '10617474036067209766761853975571453175553726692720378320591224929257914884',
         
-        '72370055773322879249818947069787467645560332571104595681866469185690586357760',
+        '61083436779756929259736982906024513812310116245655772117689761365130381412099',
         
-        '16849966666969212727929302757072651754426088021231213551827338395648',
+        '82320828122681316274862947693816722685102357950503518575583016686035520303104',
         
-        '1104292895459827704545933373813690591433594313753955059169480793353355264',
+        '7950855390791510082117091047993063946722441876616019704697862996560445440',
         
         ]
     );
