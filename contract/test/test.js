@@ -3,11 +3,11 @@ const { ethers } = require("hardhat");
 const Web3Utils = require('web3-utils');
 
 
-const number = new Web3Utils.BN(0); 
-grid.reverse().forEach((n, i) => number.setn(i, n));
+// const number = new Web3Utils.BN(0); 
+// grid.reverse().forEach((n, i) => number.setn(i, n));
 
-const number2 = new Web3Utils.BN(0); 
-grid2.reverse().forEach((n, i) => number2.setn(i, n));
+// const number2 = new Web3Utils.BN(0); 
+// grid2.reverse().forEach((n, i) => number2.setn(i, n));
 
 describe("svg", async function () {
 
@@ -58,14 +58,24 @@ describe("svg", async function () {
         
         '7950855390791510082117091047993063946722441876616019704697862996560445440',
         
-        ]
+        ],
+      6
     );
 
 
-    const svg64 = await s.tokenSVG(0);
-    const buffer = Buffer.from(svg64, 'base64');
+    // const svg64 = await s.tokenSVG(0);
+    // const buffer = Buffer.from(svg64, 'base64');
 
-    console.log('svg',buffer.toString('ascii'))
+    // console.log('svg',buffer.toString('ascii'))
+    
+    const att = await s.getAttributes(0);
+    const meta = await s.tokenURI(0);
+    
+    console.log(att)
+    console.log(meta)
+    // const buffer = Buffer.from(meta, 'base64');
+
+    // console.log('meta: ',buffer.toString('ascii'))
   });
 
 });
