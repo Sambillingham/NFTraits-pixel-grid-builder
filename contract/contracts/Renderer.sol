@@ -45,7 +45,8 @@ contract Renderer {
 
         string[6] memory buffer = generateSvgData(tokenId);
         string memory att = getAttributes(tokenId);
-        console.log(att);
+        string memory overlaySquare = overlay(tokenId);
+
         return
             string(
                 abi.encodePacked(
@@ -56,14 +57,24 @@ contract Renderer {
                     buffer[3],
                     buffer[4], 
                     buffer[5],
-                    "PHN0eWxlPnJlY3R7d2lkdGg6MTBweDtoZWlnaHQ6MTBweDt9PC9zdHlsZT48L3N2Zz4iLCAgIm5hbWUiOiAiVHJhaXRz", //style tag + name
+                    overlaySquare,
+                    "PHN0eWxlPnJlY3Qge3dpZHRoOjEwcHg7aGVpZ2h0OjEwcHg7IH0gLm8geyBtaXgtYmxlbmQtbW9kZTogb3ZlcmxheTsgd2lkdGg6IDQ4MHB4OyBoZWlnaHQ6IDQ4MHB4OyB9IDwvc3R5bGU+PC9zdmc+IiwgICJuYW1lIjogIlRyYWl0cy4g", //style tag + name
                     'IyAgMDAw', // need function to take uint256 -> base64 encoded string
                     "IiwgImRlc2NyaXB0aW9uIjogIlRyYWl0cyIs", // description 
                     att
                 )
         );
     }
-    // 
+    
+    // returns base 64 encoded overlay square based on tokenId
+    function overlay(uint256 tokenid) public view returns (string memory) {
+        // <rect class="o"  fill='red'  x='0'  y='0'   />
+        uint256 groupId = tokenid - (tokenid % 5); // base token in a group
+        uint256 rarityLevel = tokenid % 5;
+        string[5] memory overlay = ['PHJlY3QgY2xhc3M9Im8iICBmaWxsPSdibHVlJyAgeD0nMCcgIHk9JzAnIC8+', 'PHJlY3QgY2xhc3M9Im8iICBmaWxsPSdncmVlbicgIHg9JzAnICB5PScwJy8+', 'PHJlY3QgY2xhc3M9Im8iICBmaWxsPSdyZWQnICB4PScwJyAgeT0nMCcgIC8+', 'PHJlY3QgY2xhc3M9Im8iICBmaWxsPSd5ZWxsb3cnICB4PScwJyAgeT0nMCcuIC8+', 'PHJlY3QgY2xhc3M9Im8iICBmaWxsPScjMDAwMDAwJyAgeD0nMCcgIHk9JzAnIC8+'];
+        return overlay[rarityLevel];
+    }
+    
     function getAttributes(uint256 tokenid) public view returns (string memory){
         uint256 groupId = tokenid - (tokenid % 5); // base token in a group
         uint256 rarityLevel = tokenid % 5;
@@ -261,6 +272,7 @@ contract Renderer {
     
         return colours;
     }
+}
 
 // library Base64 {
 //     bytes internal constant TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

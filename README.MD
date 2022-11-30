@@ -22,5 +22,20 @@ Outputs a base64 encoded 48x48 pixel grid svg
  
 Recursively adding each pixel is inefficient (so inefficeient it will exceed the max block size in gas execution). Concatination with increasing string length is non viable. This technique packs multiple items togehter to reduce recursive concaitnations. 
 
+# Asset Data Structure
+
+```
+0 - 250 -> unique elements
+```
+
+```
+5 varients of each el -> 1250
+[0] -> 0-4
+[1] -> 5->9
+[2] -> 9->14
+...
+
+
+
 # Shoutout
 Chainrunners, Blitmap, Pixilations, pxc256 – Big shoutout for prior work on gas efficient rendering. 
