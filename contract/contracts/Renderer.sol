@@ -32,21 +32,16 @@ contract Renderer {
 
     constructor() {}
 
-    mapping(uint256 => address[2]) tokenLayers;
+    mapping(uint256 => address) tokenLayers;
 
     mapping(uint256 => uint256) intrinsicValues;
 
     address[] private _tokenDatas;
 
 
-    function store (uint256 tokenId, uint256[9] calldata layer1, uint256[9] calldata layer2, uint256 intrinsicValue) public {
-        bytes memory l1Bytes = abi.encode(layer1);
-        bytes memory l2Bytes = abi.encode(layer2);
-
-        tokenLayers[tokenId][0] = SSTORE2.write(l1Bytes);
-        tokenLayers[tokenId][1] = SSTORE2.write(l2Bytes);
+    function store (uint256 tokenId, uint256[18] calldata layers, uint256 intrinsicValue) public {
+        tokenLayers[tokenId] = SSTORE2.write(abi.encode(layers));
         intrinsicValues[tokenId] = intrinsicValue;
-
     }
 
     function tokenURI(uint256 tokenId) public view returns (string memory) {
@@ -259,12 +254,11 @@ contract Renderer {
         uint8 bit1;
         uint8 bit2;
         
-        uint256[9] memory l1 = abi.decode( SSTORE2.read(tokenLayers[tokenId][0]), (uint256[9]));
-        uint256[9] memory l2 = abi.decode( SSTORE2.read(tokenLayers[tokenId][1]), (uint256[9]));
+        uint256[18] memory layers = abi.decode( SSTORE2.read(tokenLayers[tokenId]), (uint256[18]));
 
         for (uint256 l; l < 9; l++) {
-            bytes32 layer1 = bytes32(uint256(l1[l]));
-            bytes32 layer2 = bytes32(uint256(l2[l]));
+            bytes32 layer1 = bytes32(uint256(layers[l]));
+            bytes32 layer2 = bytes32(uint256(layers[l+9]));
             for (uint256 i; i < 32; i++) {
                 for (uint256 b; b < bitMask.length; b++) {
                     bit1 = (bitMask[b] | bytes1(uint8(layer1[i])) == bytes1(uint8(0xFF))) ? 1 : 0;
