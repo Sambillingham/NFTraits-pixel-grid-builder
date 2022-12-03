@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   const [layer2, setLayer2] = React.useState<string[]>([]);
   const [drawing, setDrawing] = React.useState<boolean>(false);
   const [grid, setGrid] = React.useState<number[]>([...Array(2304)].fill(0));
-  const [currentColour, setCurrentColour] = React.useState<number>(0);
+  const [currentColour, setCurrentColour] = React.useState<number>(1);
 
   // let grid = [...Array(2304)].map( (x,i) => {
   //   const evenRow = (Math.floor(i /48)) % 2 == 0;
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
     const BigNumbersAsStrings = layers.map( layer => {
       return layer.map(layerChunk => {
         const bn = new Web3Utils.BN(0);
-        layerChunk.reverse().forEach((n, i) => bn.setn(i, n));
+        layerChunk.reverse().forEach((n:number, i:number) => bn.setn(i, n));
         return bn.toString();
       })
       // return layer
@@ -116,7 +116,12 @@ const Home: NextPage = () => {
           <div
             onClick={() => setCurrentColour(i)}
             className={styles.colorChoice}
-            style={{ backgroundColor: colour}}
+            style={{ 
+              backgroundColor: colour,
+              boxShadow: '0 0 5px rgba(33,33,33,0.4)',
+              border: currentColour === i ? 'solid 2px red' : 'dotted 1px black'
+            }}
+            key={i}
           >
           </div>
         )}
@@ -137,12 +142,12 @@ const Home: NextPage = () => {
         <code>
           [
           {layer1.map((x, i) => 
-            <p className={styles.output}>'{x}',</p>
+            <p className={styles.output} key={i}>&apos;{x}&apos;,</p>
           )}
           ]
           ,[
           {layer2.map((x, i) => 
-            <p className={styles.output}>'{x}',</p>
+            <p className={styles.output} key={i}>&apos;{x}&apos;,</p>
           )}]
           </code>
         </div>
