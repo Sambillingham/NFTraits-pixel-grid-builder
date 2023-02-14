@@ -1,6 +1,7 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 const Web3Utils = require('web3-utils');
+require('dotenv').config();
 
 
 // const number = new Web3Utils.BN(0); 
@@ -59,7 +60,8 @@ describe("svg", async function () {
         '7950855390791510082117091047993063946722441876616019704697862996560445440',
         
         ],
-      6
+      6,
+      'SXNsYW5k'
     );
 
     await s.store( 1,
@@ -102,7 +104,8 @@ describe("svg", async function () {
         '7950855390791510082117091047993063946722441876616019704697862996560445440',
         
         ],
-      6
+      6,
+      'SXNsYW5k'
     );
     await s.store( 2,
       [
@@ -144,7 +147,8 @@ describe("svg", async function () {
         '7950855390791510082117091047993063946722441876616019704697862996560445440',
         
         ],
-      6
+      6,
+      'SXNsYW5k'
     );
 
 

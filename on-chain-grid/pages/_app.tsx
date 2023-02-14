@@ -3,19 +3,16 @@ import '@rainbow-me/rainbowkit/styles.css';
 import type { AppProps } from 'next/app';
 import { RainbowKitProvider, getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { chain, configureChains, createClient, WagmiConfig } from 'wagmi';
+import { mainnet, goerli } from "wagmi/chains";
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
+import { VT323 } from "@next/font/google";
+
+const VT323Font = VT323({ weight: "400", subsets: ["latin"] });
+
 const { chains, provider, webSocketProvider } = configureChains(
-  [
-    chain.mainnet,
-    chain.polygon,
-    chain.optimism,
-    chain.arbitrum,
-    ...(process.env.NEXT_PUBLIC_ENABLE_TESTNETS === 'true'
-      ? [chain.goerli, chain.kovan, chain.rinkeby, chain.ropsten]
-      : []),
-  ],
+  [mainnet, goerli],
   [
     // alchemyProvider({
     //   // This is Alchemy's default API key.
@@ -27,7 +24,7 @@ const { chains, provider, webSocketProvider } = configureChains(
 );
 
 const { connectors } = getDefaultWallets({
-  appName: 'RainbowKit App',
+  appName: 'Traits Builder',
   chains,
 });
 
@@ -40,11 +37,18 @@ const wagmiClient = createClient({
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+    <>
+    <style jsx global>{`
+    html {
+      font-family: ${VT323Font.style.fontFamily};
+    }
+  `}</style>
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <Component {...pageProps} />
       </RainbowKitProvider>
     </WagmiConfig>
+    </>
   );
 }
 

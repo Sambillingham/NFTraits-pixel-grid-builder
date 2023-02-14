@@ -34,14 +34,20 @@ contract Renderer {
 
     mapping(uint256 => address) tokenLayers;
 
+    // consider best approach for storing 
     mapping(uint256 => uint256) intrinsicValues;
+    mapping(uint256 => string) names;
 
     address[] private _tokenDatas;
 
 
-    function store (uint256 tokenId, uint256[18] calldata layers, uint256 intrinsicValue) public {
+    function store (uint256 tokenId, uint256[18] calldata layers, uint256 intrinsicValue, string calldata name) public {
         tokenLayers[tokenId] = SSTORE2.write(abi.encode(layers));
+
+        // encode with token layers
+        // extract with colours and pass as output from colours function
         intrinsicValues[tokenId] = intrinsicValue;
+        names[tokenId] = name;
     }
 
     function tokenURI(uint256 tokenId) public view returns (string memory) {
@@ -62,9 +68,10 @@ contract Renderer {
                     buffer[5],
                     overlaySquare,
                     "PHN0eWxlPnJlY3Qge3dpZHRoOjEwcHg7aGVpZ2h0OjEwcHg7IH0gLm8geyBtaXgtYmxlbmQtbW9kZTogb3ZlcmxheTsgd2lkdGg6IDQ4MHB4OyBoZWlnaHQ6IDQ4MHB4OyB9IDwvc3R5bGU+PC9zdmc+IiwgICJuYW1lIjogIlRyYWl0cy4g", //style tag + name
+                    names[tokenId],// name here - needs to be pre-base64 encoded or padded with space char before encoding 
                     'IyAgMDAw', // need function to take uint256 -> base64 encoded string
                     "IiwgImRlc2NyaXB0aW9uIjogIlRyYWl0cyIs", // description 
-                    att
+                    att // last (okay if it includes padding at the end )
                 )
         );
     }
