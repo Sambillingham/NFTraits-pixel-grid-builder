@@ -16,6 +16,7 @@ const Home: NextPage = () => {
   const [currentColour, setCurrentColour] = React.useState<number>(1);
   const [rarityChoice, setRarityChoice] = React.useState<number>(4);
   const [gridBorder, setGridBorder] = React.useState<boolean>(true);
+  const [pasteGrid, setPasteGrid] = React.useState<string>('');
 
   const colourOptions = ['#C8C8C8', '#999', '#666', '#111']
 
@@ -26,7 +27,6 @@ const Home: NextPage = () => {
     let g = grid;
     g[i] = currentColour;
     setGrid(g);
-    event.currentTarget.style.backgroundColor = colourOptions[currentColour];
     setLayer([])
   }
 
@@ -35,9 +35,12 @@ const Home: NextPage = () => {
       let g = grid;
       g[i] = currentColour;
       setGrid(g);
-      event.currentTarget.style.backgroundColor = colourOptions[currentColour];
       setLayer([])
     }
+  }
+  const pasteGridOn = () => {
+    const newGrid = pasteGrid.split(',').map( (x:string) => parseInt(x))
+    setGrid( newGrid )
   }
   
   const generate = () => {
@@ -190,8 +193,18 @@ const Home: NextPage = () => {
                         onMouseUp={() => setDrawing(false) }
                         onMouseEnter={(event) => fillPixel?.(event, i ) }
                         key={i}
+                        style={{background: colourOptions[grid[i]] }}
                         className={`${styles.gridItem} ${gridBorder ? styles.gridItemBorder : ''}`}></div>
                   )}
+                </div>
+                <div>
+                  <h2 className="mt-4">Current Grid:</h2>
+                  <input className="border-2 border-slate-800" disabled value={grid.join(',')} />
+                  <h2>New:</h2>
+                  <input className="border-2 border-slate-800" value={pasteGrid} onChange={ (e) => setPasteGrid(e.target.value)}/>
+                  <button onClick={() => pasteGridOn()} className="mt-4 mb-4 block w-32 bg-slate-800 px-8 py-4 text-center uppercase text-white shadow-solid shadow-slate-400">
+                    update
+                  </button>
                 </div>
             </div>
 
