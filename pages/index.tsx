@@ -48,7 +48,7 @@ const Home: NextPage = () => {
     
     layers[0] = spliceIntoChunks(layers[0], 256)
     layers[1] = spliceIntoChunks(layers[1], 256)
-    
+
     const BigNumbersAsStrings = layers.map( layer => {
       return layer.map(layerChunk => {
         const bn = new Web3Utils.BN(0);
