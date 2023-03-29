@@ -12,7 +12,7 @@ import ContractData from '../components/ContractData';
 const Home: NextPage = () => {
   const [layer, setLayer] = React.useState<string[]>([]);
   const [drawing, setDrawing] = React.useState<boolean>(false);
-  const [grid, setGrid] = React.useState<number[]>([...Array(2304)].fill(0));
+  const [grid, setGrid] = React.useState<number[]>([...Array(1024)].fill(0));
   const [currentColour, setCurrentColour] = React.useState<number>(1);
   const [rarityChoice, setRarityChoice] = React.useState<number>(4);
   const [gridBorder, setGridBorder] = React.useState<boolean>(true);
@@ -61,34 +61,35 @@ const Home: NextPage = () => {
   }
 
   const calcLayers = (arr: number[]) => {
-    let l1 = [...Array(2304)].fill(0);
-    let l2 = [...Array(2304)].fill(0);
-    console.log(arr)
+    let l1 = [...Array(1024)].fill(0);
+    let l2 = [...Array(1024)].fill(0);
+
     for (let i = 0; i < arr.length; i++) {
       const colour = arr[i];
       switch (colour) {
       case 0:
         l1[i] = 0;
         l2[i] = 0;
-        console.log('WHITE');
+        // console.log(i, 'WHITE');
         break;
       case 1:
         l1[i] = 1;
         l2[i] = 1;
-        console.log('G1');
+        // console.log(i, 'G1');
         break;
       case 2:
         l1[i] = 1;
         l2[i] = 0;
-        console.log('G2');
+        // console.log(i,'G2');
         break;
       case 3:
         l1[i] = 0;
         l2[i] = 1;
-        console.log('G3');
+        // console.log(i,'G3');
         break;
       }
     }
+    
     return [l1, l2]
   }
   const spliceIntoChunks = (arr: number[], chunkSize: number) => {

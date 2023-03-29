@@ -67,8 +67,8 @@
 
 .gridItem {
   /* width: 20px; */
-  width: 2.08333%;
-  padding-top: 2.08333%;
+  width: 3.125%;
+  padding-top: 3.125%;
   box-sizing: border-box;
   display: flex;
   /* height: 20px; */
@@ -80,7 +80,7 @@
 }
 .gridItemBorder {
   border: dotted 1px #ddd;
-  padding-top: calc(2.08333% - 2px);
+  padding-top: calc(3.125% - 2px);
 }
 
 @media (max-width: 600px) {
