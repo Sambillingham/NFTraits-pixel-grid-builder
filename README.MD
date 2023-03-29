@@ -12,6 +12,18 @@
 - 4bit data allows for 4 potential outputs e.g - (1 white/ 3x grayscale)
 - Colours are based on Rarity and applied with a css mix-blend-mode:overlay that covers the entire canvas
 
+## Grid Colour Assignment
+- 0) #C8C8C8 - layer 1 = 0, layer 2 = 0
+- 1) #999999 - layer 1 = 1, layer 2 = 1
+- 2) #666666 - layer 1 = 1, layer 2 = 0
+- 3) #111111 - layer 1 = 0, layer 2 = 1
+
+- split each array into 4 256 length chunks 
+- convert 256 element array of 1/0 values to a uint256/BigNumber representation
+- concatenate resulting array of 8 values into a single array 
+
+
+
 # Build SVG onto grid
 - Loops over each row of the grid
 - concatenates batches of 4 pixels into an strut 8 element strut representing a single row
