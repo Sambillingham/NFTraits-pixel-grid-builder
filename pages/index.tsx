@@ -22,6 +22,17 @@ const Home: NextPage = () => {
 
   const rarityPreview = [1,2,3,4,5]
   const rarityColours = ['#19983f','#2679ff','#ff4718','#ffb22d','rgba(131,58,180,1)']
+  
+  React.useEffect( () => {
+
+    const queryParams = new URLSearchParams(window.location.search);
+    const gridFromUrl = queryParams.get("data") || '';
+
+    const newGrid = gridFromUrl.split('').map( (x:string) => parseInt(x))
+    const gridFilled = [...newGrid,...[...Array(1024-newGrid.length)].fill(0)]
+    setGrid( gridFilled )
+  },[])
+
 
   const clickPixel = (event: any, i: number) => {
     let g = grid;
@@ -180,11 +191,11 @@ const Home: NextPage = () => {
 
             <div className={`basis-3/4 px-8 py-8 relative`}>
                 
-                {rarityChoice == 0 && <div className={`${styles.overlay} ${styles.overlay1}`}></div>}
-                {rarityChoice == 1 && <div className={`${styles.overlay} ${styles.overlay2}`}></div>}
-                {rarityChoice == 2 && <div className={`${styles.overlay} ${styles.overlay3}`}></div>}
-                {rarityChoice == 3 && <div className={`${styles.overlay} ${styles.overlay4}`}></div>}
-                {rarityChoice == 4 && <div className={`${styles.overlay} ${styles.overlay5}`}></div>}
+                {rarityChoice == 0 && <div className={`${styles.overlay} ${styles.overlay1} z-50`}></div>}
+                {rarityChoice == 1 && <div className={`${styles.overlay} ${styles.overlay2} z-50`}></div>}
+                {rarityChoice == 2 && <div className={`${styles.overlay} ${styles.overlay3} z-50`}></div>}
+                {rarityChoice == 3 && <div className={`${styles.overlay} ${styles.overlay4} z-50`}></div>}
+                {rarityChoice == 4 && <div className={`${styles.overlay} ${styles.overlay5} z-50`}></div>}
 
                 <div className={`border-2 border-slate-800 ${styles.grid}`}>
                   {grid.map((x, i) => 
@@ -195,7 +206,9 @@ const Home: NextPage = () => {
                         onMouseEnter={(event) => fillPixel?.(event, i ) }
                         key={i}
                         style={{background: colourOptions[grid[i]] }}
-                        className={`${styles.gridItem} ${gridBorder ? styles.gridItemBorder : ''}`}></div>
+                        className={`relative ${styles.gridItem} ${gridBorder ? styles.gridItemBorder : ''} ${grid[i] ? 'text-white' : ''}`}>
+                          <span className="text-lg absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 ">{grid[i]}</span>
+                        </div>
                   )}
                 </div>
                 <div>
